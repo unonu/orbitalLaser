@@ -1,12 +1,13 @@
 -- constants --
 
-BPM = 100
+BPM 		= 100
 T_SIGNATURE = {4,4}
-BASE_KEY = {"C4"}
-SHUTDOWN = false
-RECORD = false
-BEATTIME = 60 / BPM
-RESOLUTION = 32
+BASE_KEY 	= {"C4"}
+SHUTDOWN 	= false
+RECORD 		= false
+BEATTIME 	= 60 / BPM
+RESOLUTION 	= 32
+SCRIPT 		= nil
 
 -- backend --
 
@@ -27,7 +28,7 @@ bpmTracker = {0,0,0}
 
 qwertyImage = love.graphics.newImage("Qwerty.png")
 
-function love.load()
+function love.load(args)
 	love.window.setMode(1280,720,{vsync = false, resizable = true})
 	local joysticks = love.joystick.getJoysticks()
 	controller = joysticks[1]
@@ -35,9 +36,12 @@ function love.load()
 		print(controller:getName(), controller:getAxes())
 	end
 
+	SCRIPT = args[2] or 'example.lua'
+
 	-- start the listener --
 	listener:start()
 	-- should double check if the listener is running
+	stage:supply(SCRIPT)
 	stage:supply(BPM)
 	stage:supply(T_SIGNATURE)
 	stage:supply(BASE_KEY)

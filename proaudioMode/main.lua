@@ -3,13 +3,14 @@ if not proAudio.create( 32, 44100, 2048 ) then os.exit(1) end
 
 -- constants --
 
-BPM = 100
+BPM 		= 100
 T_SIGNATURE = {4,4}
-BASE_KEY = {"C4"}
-SHUTDOWN = false
-RECORD = false
-BEATTIME = 60 / BPM
-RESOLUTION = 32
+BASE_KEY 	= {"C4"}
+SHUTDOWN 	= false
+RECORD 		= false
+BEATTIME 	= 60 / BPM
+RESOLUTION 	= 32
+SCRIPT 		= nil
 
 -- backend --
 
@@ -30,11 +31,16 @@ function love.load()
 	love.window.setMode(1280,720,{vsync = false, resizable = true})
 	local joysticks = love.joystick.getJoysticks()
 	controller = joysticks[1]
-	-- print(controller:getName())
+	if controller then
+		print(controller:getName(), controller:getAxes())
+	end
+
+	SCRIPT = args[2] or 'example.lua'
 
 	-- start the listener --
 	listener:start()
 	-- should double check if the listener is running
+	stage:supply(SCRIPT)
 	stage:supply(BPM)
 	stage:supply(T_SIGNATURE)
 	stage:supply(BASE_KEY)
@@ -66,7 +72,6 @@ function love.update(dt)
 		elseif s.cue then
 			cues[s.cue][#cues[s.cue]+1] = s
 		elseif s.reset then
-			-- proAudio.soundStop()
 			BPM = s.bpm
 			BEATTIME = 60 / BPM
 			cuePipe:push(s)
@@ -114,13 +119,13 @@ function love.draw()
 	end
 	love.graphics.circle("fill",98,26,6,16)
 
-	if RECORD then
-		love.graphics.setColor(255,0,0)
-		love.graphics.print("RECORDING",4,708)
-		love.graphics.setLineWidth(4)
-		love.graphics.rectangle("line", 0,0,1280,720)
-		love.graphics.setLineWidth(1)
-	end
+	-- if RECORD then
+	-- 	love.graphics.setColor(255,0,0)
+	-- 	love.graphics.print("RECORDING",4,708)
+	-- 	love.graphics.setLineWidth(4)
+	-- 	love.graphics.rectangle("line", 0,0,1280,720)
+	-- 	love.graphics.setLineWidth(1)
+	-- end
 end
 
 function love.keypressed( k )
@@ -140,8 +145,8 @@ function love.keypressed( k )
 		bindings = {}
 		cues = {}
 		patterns = {}
-	elseif k == ' ' then
-		RECORD = not RECORD
+	-- elseif k == ' ' then
+	-- 	RECORD = not RECORD
 	end
 end
 
