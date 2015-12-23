@@ -1,3 +1,8 @@
+*NOTE* This project was made using Löve 9.x.
+It will likely NOT WORK with the newly
+released Löve 10.x, so check your versions
+first. Literally five days later? C'mon...
+
 Orbital Laser is a live coding engine devoloped by
 me - ウノヌ - for a class. It doesn't quite follow
 conventional live coding paradigms, but I think it
